@@ -13,6 +13,11 @@ namespace PersonDirectory.Data.Models
         }
 
         public DbSet<Person> People { get; set; }
+        public DbSet<City> Cities { get; set; }
+        public DbSet<Gender> Genders { get; set; }
+        public DbSet<RelatedPerson> RelatedPeople { get; set; }
+        public DbSet<RelationType> RelationTypes { get; set; }
+        public DbSet<PhoneNumber> PhoneNumbers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

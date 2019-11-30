@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PersonDirectory.Service.Models
 {
-    public class Person : Base
+    public class Person : Base<uint>
     {
         public string FirstName { get; set; }
 

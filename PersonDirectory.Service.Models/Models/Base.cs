@@ -1,7 +1,7 @@
 ﻿namespace PersonDirectory.Service.Models
 {
-    public class Base
+    public class Base<T>
     {
-        public uint Id { get; set; }
+        public T Id { get; set; }
     }
 }
