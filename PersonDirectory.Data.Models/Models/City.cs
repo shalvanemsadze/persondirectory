@@ -5,8 +5,9 @@ using System.Text;
 
 namespace PersonDirectory.Data.Models
 {
-    public class City : Base<ushort>
+    public class City : Base<short>
     {
         public string Name { get; set; }
+        public ICollection<Person> Persons { get; set; }
     }
 }

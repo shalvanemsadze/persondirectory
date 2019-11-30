@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PersonDirectory.Data.Migrations
 {
@@ -10,7 +11,8 @@ namespace PersonDirectory.Data.Migrations
                 name: "Cities",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false),
+                    Id = table.Column<short>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -34,11 +36,13 @@ namespace PersonDirectory.Data.Migrations
                 name: "People",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(maxLength: 50, nullable: false),
                     LastName = table.Column<string>(maxLength: 50, nullable: false),
                     GenderId = table.Column<byte>(nullable: false),
                     PersonalNumber = table.Column<string>(maxLength: 11, nullable: false),
+                    Birthdate = table.Column<DateTime>(nullable: false),
                     CityId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -50,7 +54,8 @@ namespace PersonDirectory.Data.Migrations
                 name: "PhoneNumbers",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Type = table.Column<byte>(nullable: false),
                     Number = table.Column<string>(maxLength: 50, nullable: false),
                     PersonId = table.Column<long>(nullable: true)
@@ -64,7 +69,8 @@ namespace PersonDirectory.Data.Migrations
                 name: "RelatedPeople",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     RelationType = table.Column<byte>(nullable: false),
                     PersonId = table.Column<long>(nullable: false)
                 },

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace PersonDirectory.Data.Models
 {
-    public class PhoneNumber : Base<uint>
+    public class PhoneNumber : Base<int>
     {
         public PhoneNumberTypeEnum Type { get; set; }
 
@@ -15,6 +15,8 @@ namespace PersonDirectory.Data.Models
         [MaxLength(50)]
         public string Number { get; set; }
 
-        public uint? PersonId { get; set; }
+        public int? PersonId { get; set; }
+
+        public Person Person { get; set; }
     }
 }

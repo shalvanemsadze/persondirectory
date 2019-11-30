@@ -5,8 +5,9 @@ using System.Text;
 
 namespace PersonDirectory.Data.Models
 {
-    public class Gender : Base<byte>
+    public class Gender : Base<GenderEnum>
     {
         public string Name { get; set; }
+        public ICollection<Person> Persons { get; set; }
     }
 }

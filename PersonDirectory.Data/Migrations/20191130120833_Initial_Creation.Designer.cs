@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PersonDirectory.Data.Models;
 
 namespace PersonDirectory.Data.Migrations
 {
     [DbContext(typeof(PersonDirectoryContext))]
-    partial class PersonDirectoryContextModelSnapshot : ModelSnapshot
+    [Migration("20191130120833_Initial_Creation")]
+    partial class Initial_Creation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,8 +61,8 @@ namespace PersonDirectory.Data.Migrations
                     b.Property<DateTime>("Birthdate")
                         .HasColumnType("datetime2");
 
-                    b.Property<short>("CityId")
-                        .HasColumnType("smallint");
+                    b.Property<int>("CityId")
+                        .HasColumnType("int");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -82,10 +84,6 @@ namespace PersonDirectory.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CityId");
-
-                    b.HasIndex("GenderId");
-
                     b.ToTable("People");
                 });
 
@@ -101,15 +99,13 @@ namespace PersonDirectory.Data.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<int?>("PersonId")
-                        .HasColumnType("int");
+                    b.Property<long?>("PersonId")
+                        .HasColumnType("bigint");
 
                     b.Property<byte>("Type")
                         .HasColumnType("tinyint");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PersonId");
 
                     b.ToTable("PhoneNumbers");
                 });
@@ -121,15 +117,13 @@ namespace PersonDirectory.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("PersonId")
-                        .HasColumnType("int");
+                    b.Property<long>("PersonId")
+                        .HasColumnType("bigint");
 
                     b.Property<byte>("RelationType")
                         .HasColumnType("tinyint");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PersonId");
 
                     b.ToTable("RelatedPeople");
                 });
@@ -145,37 +139,6 @@ namespace PersonDirectory.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("RelationTypes");
-                });
-
-            modelBuilder.Entity("PersonDirectory.Data.Models.Person", b =>
-                {
-                    b.HasOne("PersonDirectory.Data.Models.City", "City")
-                        .WithMany("Persons")
-                        .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PersonDirectory.Data.Models.Gender", "Gender")
-                        .WithMany("Persons")
-                        .HasForeignKey("GenderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("PersonDirectory.Data.Models.PhoneNumber", b =>
-                {
-                    b.HasOne("PersonDirectory.Data.Models.Person", "Person")
-                        .WithMany("PhoneNumbers")
-                        .HasForeignKey("PersonId");
-                });
-
-            modelBuilder.Entity("PersonDirectory.Data.Models.RelatedPerson", b =>
-                {
-                    b.HasOne("PersonDirectory.Data.Models.Person", "Person")
-                        .WithMany("RelatedPeople")
-                        .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
