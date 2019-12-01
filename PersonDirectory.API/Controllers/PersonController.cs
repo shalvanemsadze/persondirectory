@@ -12,11 +12,11 @@ namespace PersonDirectory.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class PersonController : ControllerBase
     {
-        private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ILogger<PersonController> _logger;
         private readonly PersonService _service = null;
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, PersonService service)
+        public PersonController(ILogger<PersonController> logger, PersonService service)
         {
             _logger = logger;
             _service = service;
@@ -26,18 +26,8 @@ namespace PersonDirectory.API.Controllers
         [Route("add/{person}")]
         public ActionResult Add([FromBody]Person person)
         {
-           
-               
-                _service.Upsert(person);
-           
-        
-            return Ok(new Person { FirstName ="aaa", LastName = "bbbdislll"});
-        }
-
-        [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
-        {
-            return null;
+            _service.Upsert(person);
+            return Ok(new Person { FirstName = "aaa", LastName = "bbbdislll" });
         }
     }
 }

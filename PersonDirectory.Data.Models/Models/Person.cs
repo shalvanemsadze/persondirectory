@@ -1,9 +1,8 @@
 ﻿using PersonDirectory.Shared;
-using PersonDirectory.Shared.Helper_Types;
+using PersonDirectory.Shared.Helper_Types.Attributes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace PersonDirectory.Data.Models
 {
@@ -27,7 +26,7 @@ namespace PersonDirectory.Data.Models
         public string PersonalNumber { get; set; }
 
         [Required]
-        [Date(18, 2)]
+        [Date(120, 18)]
         public DateTime Birthdate { get; set; }
 
         public short CityId { get; set; }

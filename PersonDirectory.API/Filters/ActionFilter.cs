@@ -30,7 +30,7 @@ namespace PersonDirectory.API.Filters
 
                 var res = (ObjectResult)result;
                 response.Code = res.StatusCode.HasValue ? (int)res.StatusCode : StatusCodes.Status500InternalServerError;
-                if(response.Code == StatusCodes.Status200OK)
+                if (response.Code == StatusCodes.Status200OK)
                 {
                     response.Message = message ?? "success";
                     response.Result = res.Value;
