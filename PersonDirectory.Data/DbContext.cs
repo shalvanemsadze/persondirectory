@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace PersonDirectory.Data.Models
+namespace PersonDirectory.Data
 {
     public class PersonDirectoryContext : DbContext
     {

@@ -32,6 +32,8 @@ namespace PersonDirectory.Data.Models
 
         public short CityId { get; set; }
 
+        public string ImagePath { get; set; }
+
         public ICollection<RelatedPerson> RelatedPeople { get; set; }
         public Gender Gender { get; set; }
         public City City { get; set; }

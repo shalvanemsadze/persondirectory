@@ -4,6 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using PersonDirectory.Service.Models;
+using PersonDirectory.Service;
+using PersonDirectory.Shared.Helper_Types.Exceptions;
 
 namespace PersonDirectory.API.Controllers
 {
@@ -11,29 +14,30 @@ namespace PersonDirectory.API.Controllers
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
         private readonly ILogger<WeatherForecastController> _logger;
-
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        private readonly PersonService _service = null;
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, PersonService service)
         {
             _logger = logger;
+            _service = service;
+        }
+
+        [HttpPost]
+        [Route("add/{person}")]
+        public ActionResult Add([FromBody]Person person)
+        {
+           
+               
+                _service.Upsert(person);
+           
+        
+            return Ok(new Person { FirstName ="aaa", LastName = "bbbdislll"});
         }
 
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            })
-            .ToArray();
+            return null;
         }
     }
 }

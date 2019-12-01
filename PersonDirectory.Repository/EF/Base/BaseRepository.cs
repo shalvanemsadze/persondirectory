@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using PersonDirectory.Data.Models;
+using PersonDirectory.Data;
 using PersonDirectory.Repository.Contracts.Base;
 using PersonDirectory.Shared.Helper_Types;
 using System;

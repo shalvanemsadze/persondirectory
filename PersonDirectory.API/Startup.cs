@@ -11,7 +11,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using PersonDirectory.Data.Models;
+using PersonDirectory.API.Filters;
+using PersonDirectory.API.Middlewares;
+using PersonDirectory.Data;
+using PersonDirectory.Service;
 
 namespace PersonDirectory.API
 {
@@ -27,28 +30,36 @@ namespace PersonDirectory.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+            services.AddControllers(options => options.Filters.Add(new ActionFilter()));
             services.AddDbContext<PersonDirectoryContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddTransient<PersonService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+          
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
             app.UseHttpsRedirection();
-
+            
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseExceptionLogger();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
+        
         }
     }
 }
