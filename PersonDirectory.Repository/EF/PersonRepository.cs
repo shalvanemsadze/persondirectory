@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using PersonDirectory.Data;
 using PersonDirectory.Data.Models;
 using PersonDirectory.Repository.Contracts.Base;
 using PersonDirectory.Repository.EF.Base;
+using PersonDirectory.Shared;
 
 namespace PersonDirectory.Repository.EF
 {
@@ -19,9 +21,10 @@ namespace PersonDirectory.Repository.EF
             return Context.People.Include(i => i.RelatedPeople).Include(i => i.PhoneNumbers).Include(i => i.City).FirstOrDefault(f => f.Id == id);
         }
 
-        public List<Person> GetPeople(string firstName, string lastName, string personalNumber)
+        public List<Person> GetPeople(string firstName, string lastName, string personalNumber, GenderEnum? gender = null, string phoneNumber = null, DateTime? birthDate = null, int? currentPage = null, int? itemsPerPage = null)
         {
-            IQueryable<Person> query = Context.People.AsQueryable();
+            List<Person> result = null;
+            IQueryable<Person> query = Context.People.Include(p => p.PhoneNumbers).AsQueryable();
             if (!string.IsNullOrWhiteSpace(firstName))
                 query = query.Where(p => p.FirstName.Contains(firstName));
 
@@ -31,7 +34,25 @@ namespace PersonDirectory.Repository.EF
             if (!string.IsNullOrWhiteSpace(personalNumber))
                 query = query.Where(p => p.PersonalNumber.Contains(personalNumber));
 
-            var result = query.ToList();
+            if (gender != null)
+                query = query.Where(p => p.GenderId == gender);
+
+            if (birthDate != null)
+            {
+                query = query.Where(p => p.Birthdate == birthDate.Value.Date);
+            }
+
+            if (!string.IsNullOrWhiteSpace(phoneNumber))
+                query = query.Where(p => p.PhoneNumbers.Any(ph => ph.Number.Contains(phoneNumber)));
+
+            if (itemsPerPage != null && itemsPerPage > 0 && currentPage != null && currentPage > 0)
+            {
+                var skipCount = (currentPage - 1) * itemsPerPage;
+                result = query.Skip(skipCount.Value).Take(itemsPerPage.Value).ToList();
+            }
+            else
+                result = query.ToList();
+
             return result;
         }
 

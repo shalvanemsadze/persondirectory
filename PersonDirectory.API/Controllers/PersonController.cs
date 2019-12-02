@@ -2,9 +2,9 @@
 using Microsoft.Extensions.Logging;
 using PersonDirectory.Service.Models;
 using PersonDirectory.Service.BusinessLogic;
-using Newtonsoft.Json;
-using System.Collections.ObjectModel;
 using PersonDirectory.Shared;
+using System;
+using System.ComponentModel;
 
 namespace PersonDirectory.API.Controllers
 {
@@ -51,12 +51,20 @@ namespace PersonDirectory.API.Controllers
             var result = _service.GetById(id);
             return Ok(result);
         }
-        
+
         [HttpGet]
-        [Route("search/{firstName?}/{lastName?}/{personalNumber?}")]
-        public ActionResult Search(string firstName = null, string lastName = null, string personalNumber = null)
+        [Route("search")]
+        public ActionResult Search(string firstName = null, string lastName = null, string personalNumber = null, int? currentPage = null, int? itemsPerPage = null)
         {
-            var result = _service.GetPeople(firstName, lastName, personalNumber);
+            var result = _service.GetPeople(firstName, lastName, personalNumber, currentPage: currentPage, itemsPerPage: itemsPerPage);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("searchex")]
+        public ActionResult SearchEx(string firstName = null, string lastName = null, string? personalNumber = null, GenderEnum? gender = null, string phoneNumber = null, DateTime? birthDate = null, int? currentPage = null, int? itemsPerPage = null)
+        {
+            var result = _service.GetPeople(firstName, lastName, personalNumber, gender, phoneNumber, birthDate, currentPage: currentPage, itemsPerPage: itemsPerPage);
             return Ok(result);
         }
     }

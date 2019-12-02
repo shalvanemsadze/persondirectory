@@ -3,6 +3,7 @@ using PersonDirectory.Shared.Helper_Types.Attributes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PersonDirectory.Data.Models
 {
@@ -27,6 +28,7 @@ namespace PersonDirectory.Data.Models
 
         [Required]
         [Date(120, 18)]
+        [Column(TypeName = "Date")]
         public DateTime Birthdate { get; set; }
 
         public short? CityId { get; set; }

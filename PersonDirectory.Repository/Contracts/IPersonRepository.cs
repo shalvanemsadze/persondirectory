@@ -1,4 +1,6 @@
 ﻿using PersonDirectory.Data.Models;
+using PersonDirectory.Shared;
+using System;
 using System.Collections.Generic;
 
 namespace PersonDirectory.Repository.Contracts.Base
@@ -9,6 +11,6 @@ namespace PersonDirectory.Repository.Contracts.Base
         void RemovePersonPhoneNumber(PhoneNumber number);
         void RemoveRelatedPerson(RelatedPerson relatedPerson);
         Person GetPersonById(int id);
-        List<Person> GetPeople(string firstName, string lastName, string personalNumber);
+        List<Person> GetPeople(string firstName, string lastName, string personalNumber, GenderEnum? gender = null, string phoneNumber = null, DateTime? birthDate = null, int? currentPage = null, int? itemsPerPage = null);
     }
 }

@@ -4,6 +4,7 @@ using PersonDirectory.Repository.EF;
 using PersonDirectory.Service.BusinessLogic.Base;
 using PersonDirectory.Service.Models;
 using PersonDirectory.Shared;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -113,15 +114,18 @@ namespace PersonDirectory.Service.BusinessLogic
         }
 
         /// <summary>
-        ///  პიროვნებების ძებნა
+        ///   პიროვნებების ძებნა
         /// </summary>
         /// <param name="firstName"></param>
         /// <param name="lastName"></param>
         /// <param name="personalNumber"></param>
+        /// <param name="gender"></param>
+        /// <param name="phoneNumber"></param>
+        /// <param name="birthDate"></param>
         /// <returns></returns>
-        public List<Person> GetPeople(string firstName, string lastName, string personalNumber)
+        public List<Person> GetPeople(string firstName, string lastName, string personalNumber, GenderEnum? gender = null, string phoneNumber = null, DateTime? birthDate = null, int? currentPage = null, int? itemsPerPage = null)
         {
-            var items = _repository.GetPeople(firstName, lastName, personalNumber);
+            var items = _repository.GetPeople(firstName, lastName, personalNumber, gender, phoneNumber, birthDate, currentPage: currentPage, itemsPerPage: itemsPerPage);
             var result = Mapper.Map(items, new List<Person>());
             return result;
         }
