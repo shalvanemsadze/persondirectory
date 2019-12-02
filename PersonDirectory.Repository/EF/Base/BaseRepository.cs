@@ -30,6 +30,12 @@ namespace PersonDirectory.Repository.EF.Base
             dbentity = entity;
         }
 
+        public TEntity Add(TEntity dbentity)
+        {
+            DataBaseSet.Add(dbentity);
+            return dbentity;
+        }
+
         public void AddRange(IEnumerable<TDto> entityDtos)
         {
             IEnumerable<TEntity> entities = Mapper.Map<IEnumerable<TDto>, IEnumerable<TEntity>>(entityDtos);

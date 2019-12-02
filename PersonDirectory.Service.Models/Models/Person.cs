@@ -31,6 +31,8 @@ namespace PersonDirectory.Service.Models
         [Date(120, 18, "დაბადების თარიღის მინიმალური მნიშვნელობა უნდა იყოს {0}, მაქსიმალური - {1}")]
         public DateTime Birthdate { get; set; }
 
+        public string ImageContent { get; set; }
+
         public string ImagePath { get; set; }
 
         public ICollection<RelatedPerson> RelatedPeople { get; set; }

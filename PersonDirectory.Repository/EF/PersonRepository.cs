@@ -97,5 +97,20 @@ namespace PersonDirectory.Repository.EF
 
             return report;
         }
+
+        public List<Gender> GetGenders()
+        {
+            return Context.Genders.ToList();
+        }
+
+        public List<City> GetCities()
+        {
+            return Context.Cities.ToList();
+        }
+
+        public List<RelationType> GetRelationTypes()
+        {
+            return Context.RelationTypes.ToList();
+        }
     }
 }

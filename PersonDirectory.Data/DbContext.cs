@@ -22,8 +22,8 @@ namespace PersonDirectory.Data
         public DbSet<RelationType> RelationTypes { get; set; }
         public DbSet<PhoneNumber> PhoneNumbers { get; set; }
         public DbSet<PhoneNumberType> PhoneNumberTypes { get; set; }
-        
- 
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Gender>().Property(x => x.Id).ValueGeneratedNever();
@@ -82,6 +82,21 @@ namespace PersonDirectory.Data
                   Id = PhoneNumberTypeEnum.Home,
                   Name = PhoneNumberTypeEnum.Home.ToString()
               });
+
+            modelBuilder.Entity<City>().HasData(new City
+            {
+                Id = 1,
+                Name = "Tbilisi"
+            },
+           new City
+           {
+               Id = 2,
+               Name = "Batumi"
+           }, new City
+           {
+               Id = 3,
+               Name = "Kutaisi"
+           });
 
             #endregion
         }

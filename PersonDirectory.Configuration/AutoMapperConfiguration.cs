@@ -19,7 +19,8 @@ namespace PersonDirectory.Configuration
                 cfg.CreateMap<City, PersonDirectory.Service.Models.City>().ReverseMap();
                 cfg.CreateMap<PhoneNumber, PersonDirectory.Service.Models.PhoneNumber>().ReverseMap();
                 cfg.CreateMap<RelatedPerson, PersonDirectory.Service.Models.RelatedPerson>().ReverseMap();
-              
+                cfg.CreateMap<RelationType, PersonDirectory.Service.Models.RelationType>().ReverseMap();
+
                 cfg.CreateMap<PersonDirectory.Service.Models.Person, Person>().ForMember(dest => dest.GenderId, map => map.MapFrom((s, d) => s.Gender))
                         .ForMember(dest => dest.Gender, map => map.Ignore()).ForMember(dest => dest.CityId, map => map.MapFrom((s, d) => s.City?.Id ?? null));
                

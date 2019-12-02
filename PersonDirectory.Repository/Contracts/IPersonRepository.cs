@@ -15,5 +15,8 @@ namespace PersonDirectory.Repository.Contracts.Base
         List<Person> GetPeople(string firstName, string lastName, string personalNumber, GenderEnum? gender = null, string phoneNumber = null, DateTime? birthDate = null, int? currentPage = null, int? itemsPerPage = null);
         List<Service.Models.RelatedPersonsReportItem> GetRelatedPersonsReport(int personId);
         void AddRelatedPerson(RelatedPerson relatedPerson);
+        List<Gender> GetGenders();
+        List<City> GetCities();
+        List<RelationType> GetRelationTypes();
     }
 }

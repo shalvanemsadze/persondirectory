@@ -5,6 +5,12 @@ using PersonDirectory.Service.BusinessLogic;
 using PersonDirectory.Shared;
 using System;
 using System.ComponentModel;
+using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Microsoft.Extensions.Configuration;
+using PersonDirectory.API.Attributes;
 
 namespace PersonDirectory.API.Controllers
 {
@@ -14,10 +20,12 @@ namespace PersonDirectory.API.Controllers
     {
         private readonly ILogger<PersonController> _logger;
         private readonly PersonService _service = null;
-        public PersonController(ILogger<PersonController> logger, PersonService service)
+        private readonly IConfiguration _configuration = null;
+        public PersonController(ILogger<PersonController> logger, IConfiguration configuration, PersonService service)
         {
             _logger = logger;
             _service = service;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -96,7 +104,7 @@ namespace PersonDirectory.API.Controllers
         [Route("get/{id}")]
         public ActionResult GetById(int id)
         {
-            var result = _service.GetById(id);
+            var result = _service.GetById(id, _configuration.GetValue<string>("PersonPhotosPath"));
             return Ok(result);
         }
 
@@ -148,6 +156,68 @@ namespace PersonDirectory.API.Controllers
         {
             var result = _service.GetRelatedPersonsReport(personId);
             return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("upload/{personId}")]
+        public ActionResult OnPostUploadAsync([AllowedExtensions(new[] { ".jpg", ".png", ".jpeg" })]IFormFile file, int personId)
+        {
+            if (file.Length > 0)
+            {
+                var extension = Path.GetExtension(file.FileName);
+                var saveAttributes = _service.GetImageSaveAttributes(personId, extension, _configuration.GetValue<string>("PersonPhotosPath"));
+
+                var directoryPath = saveAttributes.Item2;
+                var fullPath = saveAttributes.Item3;
+                var pathForSave = saveAttributes.Item4;
+
+                _service.GetById(16);
+
+                if (!Directory.Exists(directoryPath))
+                    Directory.CreateDirectory(directoryPath);
+                using (var stream = System.IO.File.Create(fullPath))
+                {
+                    file.CopyTo(stream);
+                }
+
+                _service.UpdateImagePath(personId, pathForSave);
+            }
+
+            return Ok("");
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("genders")]
+        public ActionResult GetGenders()
+        {
+            return Ok(_service.GetGenders());
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns
+        [HttpGet]
+        [Route("cities")]
+        public ActionResult GetCities()
+        {
+            return Ok(_service.GetCities());
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("relationtypes")]
+        public ActionResult GetRelationTypes()
+        {
+            return Ok(_service.GetRelationTypes());
         }
     }
 }

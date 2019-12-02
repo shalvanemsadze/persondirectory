@@ -17,6 +17,7 @@ namespace PersonDirectory.Repository.Contracts.Base
     public interface IBaseRepository<TEntity, TDto> where TEntity : class where TDto : class
     {
         void Add(TDto entityDto, out TEntity dbentity);
+        TEntity Add(TEntity dbentity);
         void AddRange(IEnumerable<TDto> entityDtos);
         void Remove(object ID);
         void RemoveRange(IEnumerable<object> IDes);

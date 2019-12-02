@@ -7,6 +7,8 @@ using PersonDirectory.Shared;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
 
 namespace PersonDirectory.Service.BusinessLogic
 {
@@ -33,8 +35,9 @@ namespace PersonDirectory.Service.BusinessLogic
             Data.Models.Person added = null;
             if (operationType == OperationTypeEnum.Add)
             {
-                _repository.Add(person, out Data.Models.Person addedItem);
-                added = addedItem;
+                var dbPerson = Mapper.Map(person, new Data.Models.Person());
+                dbPerson.City = null;
+                added = _repository.Add(dbPerson);
             }
             else
             {
@@ -52,7 +55,7 @@ namespace PersonDirectory.Service.BusinessLogic
                     targetItem.Birthdate = person.Birthdate;
                     if (person.City != null && person.City.Id != default)
                         targetItem.CityId = person.City.Id;
-                    person.City = null;
+                    targetItem.City = null;
                     result = targetItem.Id;
 
                     if (person.PhoneNumbers != null && person.PhoneNumbers.Count > 0)
@@ -102,13 +105,26 @@ namespace PersonDirectory.Service.BusinessLogic
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Person GetById(int id)
+        public Person GetById(int id, string imageBasePath = null)
         {
             var dbItem = _repository.GetPersonById(id);
             if (dbItem == null)
                 throw new System.Exception("პიროვნება ვერ მოიძებნა");
 
             var targetItem = Mapper.Map(dbItem, new Person());
+
+            if (!string.IsNullOrWhiteSpace(targetItem.ImagePath) && !string.IsNullOrWhiteSpace(imageBasePath))
+            {
+                var fileInfo = new FileInfo(@$"{imageBasePath}\{targetItem.ImagePath}");
+                byte[] data = new byte[fileInfo.Length];
+                using (var fs = fileInfo.OpenRead())
+                {
+                    fs.Read(data, 0, data.Length);
+                }
+
+                //fileInfo.Delete();
+                targetItem.ImageContent = Convert.ToBase64String(data);
+            }
 
             return targetItem;
         }
@@ -161,6 +177,59 @@ namespace PersonDirectory.Service.BusinessLogic
         {
             _repository.RemoveRelatedPerson(type, personId, relatedPersonId);
             Uow.SaveChanges();
+        }
+
+        public void UpdateImagePath(int personId, string path)
+        {
+            var targetItem = _repository.SingleEntity(personId);
+
+            if (targetItem == null)
+                throw new Exception("პიროვნება ვერ მოიძებნა");
+
+            targetItem.ImagePath = path;
+            Uow.SaveChanges();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public List<Gender> GetGenders()
+        {
+            var dbItems = _repository.GetGenders();
+            var result = Mapper.Map(dbItems, new List<Gender>());
+            return result;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public List<City> GetCities()
+        {
+            var dbItems = _repository.GetCities();
+            var result = dbItems.Select(s => new City { Id = s.Id, Name = s.Name }).ToList();
+            return result;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public List<RelationType> GetRelationTypes()
+        {
+            var dbItems = _repository.GetRelationTypes();
+            var result = Mapper.Map(dbItems, new List<RelationType>());
+            return result;
+        }
+
+        public Tuple<string, string, string, string> GetImageSaveAttributes(int personId, string extension, string baseDirectoryPath)
+        {
+            var fileName = $"person_photo_{personId}{extension}";
+            var directoryPath = @$"{baseDirectoryPath}\{personId}";
+            var fullPath = @$"{directoryPath}\{fileName}";
+            var pathForSave = @$"{personId}\{fileName}";
+            return new Tuple<string, string, string, string>(fileName, directoryPath, fullPath, pathForSave);
         }
     }
 }
