@@ -4,6 +4,12 @@ using System.Text;
 
 namespace PersonDirectory.Shared
 {
+    public enum OperationTypeEnum : byte
+    {
+        Add = 1,
+        Edit = 2
+    }
+
     public enum GenderEnum : byte
     {
         Male = 1,

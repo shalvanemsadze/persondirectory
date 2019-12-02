@@ -86,7 +86,7 @@ namespace PersonDirectory.Repository.EF.Base
         }
 
 
-        List<TDto> IBaseRepository<TEntity, TDto>.Get(Expression<Func<TEntity, bool>> filterPredicate, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderByPredicate,
+       public List<TDto> Get(Expression<Func<TEntity, bool>> filterPredicate, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderByPredicate,
             int? skipAccessorPredicate, int? takeAccessorPredicate)
         {
             IQueryable<TEntity> query = this.DataBaseSet;

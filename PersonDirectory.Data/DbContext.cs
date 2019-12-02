@@ -22,7 +22,8 @@ namespace PersonDirectory.Data
         public DbSet<RelationType> RelationTypes { get; set; }
         public DbSet<PhoneNumber> PhoneNumbers { get; set; }
         public DbSet<PhoneNumberType> PhoneNumberTypes { get; set; }
-
+        
+ 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Gender>().Property(x => x.Id).ValueGeneratedNever();

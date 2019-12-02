@@ -9,6 +9,6 @@ namespace PersonDirectory.Data.Models
     public class PhoneNumberType : Base<PhoneNumberTypeEnum>
     {
         public string Name { get; set; }
-        public ICollection<PhoneNumber> PhoneNumbers { get; set; }
+        public virtual ICollection<PhoneNumber> PhoneNumbers { get; set; }
     }
 }

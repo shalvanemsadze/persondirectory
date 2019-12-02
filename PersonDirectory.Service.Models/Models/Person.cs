@@ -1,4 +1,5 @@
-﻿ 
+﻿
+using Newtonsoft.Json;
 using PersonDirectory.Shared;
 using PersonDirectory.Shared.Helper_Types.Attributes;
 using System;

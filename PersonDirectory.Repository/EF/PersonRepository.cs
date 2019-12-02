@@ -16,7 +16,23 @@ namespace PersonDirectory.Repository.EF
 
         public Person GetPersonById(int id)
         {
-           return Context.People.Include(i => i.RelatedPeople).FirstOrDefault(f => f.Id == id);
+            return Context.People.Include(i => i.RelatedPeople).Include(i => i.PhoneNumbers).Include(i => i.City).FirstOrDefault(f => f.Id == id);
+        }
+
+        public List<Person> GetPeople(string firstName, string lastName, string personalNumber)
+        {
+            IQueryable<Person> query = Context.People.AsQueryable();
+            if (!string.IsNullOrWhiteSpace(firstName))
+                query = query.Where(p => p.FirstName.Contains(firstName));
+
+            if (!string.IsNullOrWhiteSpace(lastName))
+                query = query.Where(p => p.LastName.Contains(lastName));
+
+            if (!string.IsNullOrWhiteSpace(personalNumber))
+                query = query.Where(p => p.PersonalNumber.Contains(personalNumber));
+
+            var result = query.ToList();
+            return result;
         }
 
         public List<PhoneNumber> GetPersonPhoneNumber(int personId)

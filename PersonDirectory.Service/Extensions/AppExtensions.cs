@@ -11,7 +11,7 @@ namespace PersonDirectory.Service.Extensions
     {
         public static IServiceCollection SetUpDALDependencies(this IServiceCollection serviceCollection, string connectionString)
         {
-            serviceCollection.AddDbContext<PersonDirectoryContext>(options => options.UseSqlServer(connectionString));
+            serviceCollection.AddDbContext<PersonDirectoryContext>(options => options.UseSqlServer(connectionString).UseLazyLoadingProxies(false));
             return serviceCollection;
         }
     }

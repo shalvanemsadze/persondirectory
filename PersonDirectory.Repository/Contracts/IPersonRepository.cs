@@ -9,5 +9,6 @@ namespace PersonDirectory.Repository.Contracts.Base
         void RemovePersonPhoneNumber(PhoneNumber number);
         void RemoveRelatedPerson(RelatedPerson relatedPerson);
         Person GetPersonById(int id);
+        List<Person> GetPeople(string firstName, string lastName, string personalNumber);
     }
 }

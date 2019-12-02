@@ -24,7 +24,7 @@ namespace PersonDirectory.Configuration
                         .ForMember(dest => dest.Gender, map => map.Ignore()).ForMember(dest => dest.CityId, map => map.MapFrom((s, d) => s.City?.Id ?? null));
                
                 cfg.CreateMap<Person, PersonDirectory.Service.Models.Person>().ForMember(dest => dest.Gender, map => map.MapFrom((s, d) => s.GenderId))
-                        .ForMember(dest => dest.City, map => map.MapFrom((s, d) => s.CityId != null ? new PersonDirectory.Service.Models.City { Id = s.CityId.Value } : null))
+                        .ForMember(dest => dest.City, map => map.MapFrom((s, d) => s.CityId != null ? new PersonDirectory.Service.Models.City { Id = s.CityId.Value, Name = s.City?.Name } : null))
                         .ForSourceMember(s => s.Gender, d => d.DoNotValidate());
             });
         }

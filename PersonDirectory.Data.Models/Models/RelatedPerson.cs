@@ -12,7 +12,7 @@ namespace PersonDirectory.Data.Models
         public int PersonId { get; set; }
         public int RelativePersonId { get; set; }
 
-        public Person Person { get; set; }
-        public Person RelativePerson { get; set; }
+        public virtual Person Person { get; set; }
+        public virtual Person RelativePerson { get; set; }
     }
 }

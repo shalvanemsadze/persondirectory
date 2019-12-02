@@ -33,11 +33,11 @@ namespace PersonDirectory.Data.Models
 
         public string ImagePath { get; set; }
 
-        public ICollection<RelatedPerson> RelatedPeople { get; set; }
-        public ICollection<RelatedPerson> PeopleByRelated { get; set; }
-        public Gender Gender { get; set; }
-        public City City { get; set; }
-        public ICollection<PhoneNumber> PhoneNumbers { get; set; }
+        public virtual ICollection<RelatedPerson> RelatedPeople { get; set; }
+        public virtual ICollection<RelatedPerson> PeopleByRelated { get; set; }
+        public virtual Gender Gender { get; set; }
+        public virtual City City { get; set; }
+        public virtual ICollection<PhoneNumber> PhoneNumbers { get; set; }
 
     }
 }

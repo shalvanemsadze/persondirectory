@@ -8,6 +8,6 @@ namespace PersonDirectory.Data.Models
     public class City : Base<short>
     {
         public string Name { get; set; }
-        public ICollection<Person> Persons { get; set; }
+        public virtual ICollection<Person> Persons { get; set; }
     }
 }
