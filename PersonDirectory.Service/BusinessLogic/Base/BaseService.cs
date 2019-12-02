@@ -1,4 +1,6 @@
-﻿using PersonDirectory.Data;
+﻿using AutoMapper;
+using PersonDirectory.Configuration;
+using PersonDirectory.Data;
 using PersonDirectory.Repository;
 using PersonDirectory.Shared.Helper_Types.Exceptions;
 using System;
@@ -6,21 +8,23 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace PersonDirectory.Service
+namespace PersonDirectory.Service.BusinessLogic.Base
 {
     public class BaseService
     {
         PersonDirectoryContext _context = null;
         private UnitOfWork _uow = null;
-        public UnitOfWork Uow
+        protected Mapper Mapper = AutoMapperConfiguration.Mapper;
+
+        protected UnitOfWork Uow
         {
             get
             {
-                if (this._uow == null)
+                if (_uow == null)
                 {
-                    this._uow = new UnitOfWork(_context);
+                    _uow = new UnitOfWork(_context);
                 }
-                return this._uow;
+                return _uow;
             }
         }
 
@@ -31,7 +35,7 @@ namespace PersonDirectory.Service
 
         protected void ValidateModelState(object instance)
         {
-            var validationContext = new ValidationContext(instance);
+            var validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(instance);
             bool isValid = Validator.TryValidateObject(instance, validationContext, null, true);
 
             if (!isValid)

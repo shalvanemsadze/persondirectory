@@ -21,6 +21,6 @@ namespace PersonDirectory.Shared
     {
         Mobile = 1,
         Office = 2,
-        House = 3
+        Home = 3
     }
 }

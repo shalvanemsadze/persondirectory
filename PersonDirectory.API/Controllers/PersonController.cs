@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PersonDirectory.Service.Models;
-using PersonDirectory.Service;
-using PersonDirectory.Shared.Helper_Types.Exceptions;
+using PersonDirectory.Service.BusinessLogic;
+using Newtonsoft.Json;
+using System.Collections.ObjectModel;
 
 namespace PersonDirectory.API.Controllers
 {
@@ -26,8 +23,16 @@ namespace PersonDirectory.API.Controllers
         [Route("add/{person}")]
         public ActionResult Add([FromBody]Person person)
         {
-            _service.Upsert(person);
-            return Ok(new Person { FirstName = "aaa", LastName = "bbbdislll" });
+            var result = _service.Upsert(person);
+            return Ok(result);
+        }
+        
+        [HttpPost]
+        [Route("delete/{id}")]
+        public ActionResult Delete(int id)
+        {
+            var result = _service.Delete(id);
+            return Ok(result);
         }
     }
 }

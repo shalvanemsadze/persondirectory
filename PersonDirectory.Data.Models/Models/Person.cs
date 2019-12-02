@@ -18,7 +18,7 @@ namespace PersonDirectory.Data.Models
         [MaxLength(50)]
         public string LastName { get; set; }
 
-        public GenderEnum GenderId { get; set; }
+        public GenderEnum? GenderId { get; set; }
 
         [Required]
         [MinLength(11)]
@@ -29,11 +29,12 @@ namespace PersonDirectory.Data.Models
         [Date(120, 18)]
         public DateTime Birthdate { get; set; }
 
-        public short CityId { get; set; }
+        public short? CityId { get; set; }
 
         public string ImagePath { get; set; }
 
         public ICollection<RelatedPerson> RelatedPeople { get; set; }
+        public ICollection<RelatedPerson> PeopleByRelated { get; set; }
         public Gender Gender { get; set; }
         public City City { get; set; }
         public ICollection<PhoneNumber> PhoneNumbers { get; set; }

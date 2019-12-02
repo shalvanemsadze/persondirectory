@@ -8,7 +8,7 @@ using System.Text;
 
 namespace PersonDirectory.Service.Models
 {
-    public class Person : Base<uint>
+    public class Person : Base<int>
     {
         [Required(ErrorMessage = "სახელი გადმოცემული არ არის")]
         [StringLength(50, MinimumLength = 2, ErrorMessage = "სახელი უნდა შედგებოდეს მინიმუმ 2 და მაქსიმუმ 50 სიმბოლოსგან")]
@@ -20,7 +20,7 @@ namespace PersonDirectory.Service.Models
         [NameCheck]
         public string LastName { get; set; }
 
-        public GenderEnum Gender { get; set; }
+        public GenderEnum? Gender { get; set; }
 
         [Required(ErrorMessage = "პირადი ნომერი გადმოცემული არ არის")]
         [StringLength(11, MinimumLength = 11, ErrorMessage = "პირადი ნომერი უნდა შედგებოდეს 11 სიმბოლოსგან")]

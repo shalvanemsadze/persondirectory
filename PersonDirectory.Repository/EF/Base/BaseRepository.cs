@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using PersonDirectory.Configuration;
 using PersonDirectory.Data;
 using PersonDirectory.Repository.Contracts.Base;
-using PersonDirectory.Shared.Helper_Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 
 namespace PersonDirectory.Repository.EF.Base
 {
@@ -20,33 +19,33 @@ namespace PersonDirectory.Repository.EF.Base
 
         public BaseRepository(PersonDirectoryContext context)
         {
-            this.Context = context;
-            this.DataBaseSet = context.Set<TEntity>();
+            Context = context;
+            DataBaseSet = context.Set<TEntity>();
         }
 
         public void Add(TDto entityDto, out TEntity dbentity)
         {
             var entity = Mapper.Map<TDto, TEntity>(entityDto);
-            this.DataBaseSet.Add(entity);
+            DataBaseSet.Add(entity);
             dbentity = entity;
         }
 
         public void AddRange(IEnumerable<TDto> entityDtos)
         {
             IEnumerable<TEntity> entities = Mapper.Map<IEnumerable<TDto>, IEnumerable<TEntity>>(entityDtos);
-            this.DataBaseSet.AddRange(entities);
+            DataBaseSet.AddRange(entities);
         }
 
         public void Remove(object ID)
         {
             TEntity entity = this.DataBaseSet.Find(ID);
-            this.DataBaseSet.Remove(entity);
+            DataBaseSet.Remove(entity);
         }
 
         public void RemoveRange(IEnumerable<object> IDes)
         {
             IEnumerable<TEntity> entities = (IEnumerable<TEntity>)this.DataBaseSet.Find(IDes);
-            this.DataBaseSet.RemoveRange(entities);
+            DataBaseSet.RemoveRange(entities);
         }
 
         public TDto Find(Expression<Func<TEntity, bool>> filterPredicate, params Expression<Func<TEntity, object>>[] includes)
@@ -64,20 +63,31 @@ namespace PersonDirectory.Repository.EF.Base
 
         public TDto Find(object ID)
         {
-            TEntity entity = this.DataBaseSet.Find(ID);
+            TEntity entity = DataBaseSet.Find(ID);
             return Mapper.Map<TEntity, TDto>(entity);
         }
 
         public TEntity SingleEntity(object ID)
         {
-            return this.DataBaseSet.Find(ID);
+            return DataBaseSet.Find(ID);
         }
 
-        List<TDto> IBaseRepository<TEntity, TDto>.Get(
-            Expression<Func<TEntity, bool>> filterPredicate,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderByPredicate,
-            int? skipAccessorPredicate,
-            int? takeAccessorPredicate)
+        public TEntity SingleEntity(Expression<Func<TEntity, bool>> filterPredicate, params Expression<Func<TEntity, object>>[] includes)
+        {
+            IQueryable<TEntity> query = this.DataBaseSet;
+
+            foreach (Expression<Func<TEntity, object>> include in includes)
+                query.Include(include);
+
+            if (filterPredicate != null)
+                return query.FirstOrDefault(filterPredicate);
+
+            return query.FirstOrDefault();
+        }
+
+
+        List<TDto> IBaseRepository<TEntity, TDto>.Get(Expression<Func<TEntity, bool>> filterPredicate, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderByPredicate,
+            int? skipAccessorPredicate, int? takeAccessorPredicate)
         {
             IQueryable<TEntity> query = this.DataBaseSet;
 
@@ -98,7 +108,9 @@ namespace PersonDirectory.Repository.EF.Base
 
         public void Update(TEntity entity)
         {
-            this.DataBaseSet.Attach(entity);
+            if (Context.Entry(entity).State == EntityState.Detached)
+                DataBaseSet.Attach(entity);
+
             Context.Entry(entity).State = EntityState.Modified;
         }
 
@@ -107,7 +119,7 @@ namespace PersonDirectory.Repository.EF.Base
             if (filterPredicate == null)
                 return this.DataBaseSet.Any();
 
-            return this.DataBaseSet.Any(filterPredicate);
+            return DataBaseSet.Any(filterPredicate);
         }
 
         public bool All(Expression<Func<TEntity, bool>> filterPredicate = null)
@@ -115,10 +127,7 @@ namespace PersonDirectory.Repository.EF.Base
             if (filterPredicate == null)
                 return default(bool);
 
-            return this.DataBaseSet.All(filterPredicate);
+            return DataBaseSet.All(filterPredicate);
         }
-
-
     }
-
 }

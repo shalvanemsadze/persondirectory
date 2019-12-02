@@ -23,6 +23,7 @@ namespace PersonDirectory.Repository.Contracts.Base
         TDto Find(Expression<Func<TEntity, bool>> filterPredicate = null, params Expression<Func<TEntity, object>>[] includes);
         TDto Find(object ID);
         TEntity SingleEntity(object ID);
+        TEntity SingleEntity(Expression<Func<TEntity, bool>> filterPredicate, params Expression<Func<TEntity, object>>[] includes);
         List<TDto> Get(Expression<Func<TEntity, bool>> filterPredicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderByPredicate = null, int? skipAccessorPredicate = null, int? takeAccessorPredicate = null);
         void Update(TEntity entity);
         bool Any(Expression<Func<TEntity, bool>> filterPredicate = null);

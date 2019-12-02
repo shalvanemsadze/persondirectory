@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PersonDirectory.Data.Models\PersonDirectory.Data.Models.csproj" />
+    <ProjectReference Include="..\PersonDirectory.Service.Models\PersonDirectory.Service.Models.csproj" />
+  </ItemGroup>
+
+</Project>

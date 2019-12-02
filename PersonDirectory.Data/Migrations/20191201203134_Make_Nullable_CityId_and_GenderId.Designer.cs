@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PersonDirectory.Data;
 
 namespace PersonDirectory.Data.Migrations
 {
     [DbContext(typeof(PersonDirectoryContext))]
-    partial class PersonDirectoryContextModelSnapshot : ModelSnapshot
+    [Migration("20191201203134_Make_Nullable_CityId_and_GenderId")]
+    partial class Make_Nullable_CityId_and_GenderId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,18 +49,6 @@ namespace PersonDirectory.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Genders");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = (byte)1,
-                            Name = "Male"
-                        },
-                        new
-                        {
-                            Id = (byte)2,
-                            Name = "Female"
-                        });
                 });
 
             modelBuilder.Entity("PersonDirectory.Data.Models.Person", b =>
@@ -109,8 +99,6 @@ namespace PersonDirectory.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Number")
@@ -128,39 +116,7 @@ namespace PersonDirectory.Data.Migrations
 
                     b.HasIndex("PersonId");
 
-                    b.HasIndex("Type");
-
                     b.ToTable("PhoneNumbers");
-                });
-
-            modelBuilder.Entity("PersonDirectory.Data.Models.PhoneNumberType", b =>
-                {
-                    b.Property<byte>("Id")
-                        .HasColumnType("tinyint");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PhoneNumberTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = (byte)1,
-                            Name = "Mobile"
-                        },
-                        new
-                        {
-                            Id = (byte)2,
-                            Name = "Office"
-                        },
-                        new
-                        {
-                            Id = (byte)3,
-                            Name = "Home"
-                        });
                 });
 
             modelBuilder.Entity("PersonDirectory.Data.Models.RelatedPerson", b =>
@@ -176,14 +132,9 @@ namespace PersonDirectory.Data.Migrations
                     b.Property<byte>("RelationType")
                         .HasColumnType("tinyint");
 
-                    b.Property<int>("RelativePersonId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("PersonId");
-
-                    b.HasIndex("RelativePersonId");
 
                     b.ToTable("RelatedPeople");
                 });
@@ -199,23 +150,6 @@ namespace PersonDirectory.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("RelationTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = (byte)1,
-                            Name = "Colleague"
-                        },
-                        new
-                        {
-                            Id = (byte)2,
-                            Name = "Acquaintance"
-                        },
-                        new
-                        {
-                            Id = (byte)3,
-                            Name = "Relative"
-                        });
                 });
 
             modelBuilder.Entity("PersonDirectory.Data.Models.Person", b =>
@@ -233,14 +167,7 @@ namespace PersonDirectory.Data.Migrations
                 {
                     b.HasOne("PersonDirectory.Data.Models.Person", "Person")
                         .WithMany("PhoneNumbers")
-                        .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("PersonDirectory.Data.Models.PhoneNumberType", "PhoneNumberType")
-                        .WithMany("PhoneNumbers")
-                        .HasForeignKey("Type")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PersonId");
                 });
 
             modelBuilder.Entity("PersonDirectory.Data.Models.RelatedPerson", b =>
@@ -248,13 +175,7 @@ namespace PersonDirectory.Data.Migrations
                     b.HasOne("PersonDirectory.Data.Models.Person", "Person")
                         .WithMany("RelatedPeople")
                         .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("PersonDirectory.Data.Models.Person", "RelativePerson")
-                        .WithMany("PeopleByRelated")
-                        .HasForeignKey("RelativePersonId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

@@ -7,6 +7,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20191130120307_Initial_Creation.cs" />
     <Compile Remove="Migrations\20191130120307_Initial_Creation.Designer.cs" />
+    <Compile Remove="Migrations\20191201190914_dishla.cs" />
+    <Compile Remove="Migrations\20191201190914_dishla.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.0.1" />

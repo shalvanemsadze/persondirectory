@@ -62,7 +62,7 @@ namespace PersonDirectory.API.Middlewares
     }
     public static class RequestLocalizationExtensions
     {
-        public static IApplicationBuilder UseRequestLocalization(this IApplicationBuilder builder)
+        public static IApplicationBuilder UseCustomRequestLocalization(this IApplicationBuilder builder)
         {
             return builder.UseMiddleware<RequestLocalization>();
         }

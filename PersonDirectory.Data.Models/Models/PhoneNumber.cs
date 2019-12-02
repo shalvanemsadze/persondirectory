@@ -18,5 +18,7 @@ namespace PersonDirectory.Data.Models
         public int? PersonId { get; set; }
 
         public Person Person { get; set; }
+
+        public PhoneNumberType PhoneNumberType { get; set; }
     }
 }

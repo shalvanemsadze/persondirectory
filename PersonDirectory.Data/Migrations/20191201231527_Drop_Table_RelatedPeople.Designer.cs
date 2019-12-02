@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PersonDirectory.Data;
 
 namespace PersonDirectory.Data.Migrations
 {
     [DbContext(typeof(PersonDirectoryContext))]
-    partial class PersonDirectoryContextModelSnapshot : ModelSnapshot
+    [Migration("20191201231527_Drop_Table_RelatedPeople")]
+    partial class Drop_Table_RelatedPeople
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -163,31 +165,6 @@ namespace PersonDirectory.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("PersonDirectory.Data.Models.RelatedPerson", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("PersonId")
-                        .HasColumnType("int");
-
-                    b.Property<byte>("RelationType")
-                        .HasColumnType("tinyint");
-
-                    b.Property<int>("RelativePersonId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PersonId");
-
-                    b.HasIndex("RelativePersonId");
-
-                    b.ToTable("RelatedPeople");
-                });
-
             modelBuilder.Entity("PersonDirectory.Data.Models.RelationType", b =>
                 {
                     b.Property<byte>("Id")
@@ -240,21 +217,6 @@ namespace PersonDirectory.Data.Migrations
                         .WithMany("PhoneNumbers")
                         .HasForeignKey("Type")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("PersonDirectory.Data.Models.RelatedPerson", b =>
-                {
-                    b.HasOne("PersonDirectory.Data.Models.Person", "Person")
-                        .WithMany("RelatedPeople")
-                        .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("PersonDirectory.Data.Models.Person", "RelativePerson")
-                        .WithMany("PeopleByRelated")
-                        .HasForeignKey("RelativePersonId")
-                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

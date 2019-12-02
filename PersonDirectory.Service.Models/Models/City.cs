@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PersonDirectory.Service.Models
 {
-    public class City : Base<ushort>
+    public class City : Base<short>
     {
         public string Name { get; set; }
     }

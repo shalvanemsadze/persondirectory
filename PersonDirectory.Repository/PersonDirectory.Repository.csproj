@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PersonDirectory.Configuration\PersonDirectory.Configuration.csproj" />
     <ProjectReference Include="..\PersonDirectory.Data\PersonDirectory.Data.csproj" />
     <ProjectReference Include="..\PersonDirectory.Shared\PersonDirectory.Shared.csproj" />
   </ItemGroup>

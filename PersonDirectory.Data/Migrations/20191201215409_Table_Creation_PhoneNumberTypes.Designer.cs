@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PersonDirectory.Data;
 
 namespace PersonDirectory.Data.Migrations
 {
     [DbContext(typeof(PersonDirectoryContext))]
-    partial class PersonDirectoryContextModelSnapshot : ModelSnapshot
+    [Migration("20191201215409_Table_Creation_PhoneNumberTypes")]
+    partial class Table_Creation_PhoneNumberTypes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -176,14 +178,9 @@ namespace PersonDirectory.Data.Migrations
                     b.Property<byte>("RelationType")
                         .HasColumnType("tinyint");
 
-                    b.Property<int>("RelativePersonId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("PersonId");
-
-                    b.HasIndex("RelativePersonId");
 
                     b.ToTable("RelatedPeople");
                 });
@@ -233,8 +230,7 @@ namespace PersonDirectory.Data.Migrations
                 {
                     b.HasOne("PersonDirectory.Data.Models.Person", "Person")
                         .WithMany("PhoneNumbers")
-                        .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("PersonId");
 
                     b.HasOne("PersonDirectory.Data.Models.PhoneNumberType", "PhoneNumberType")
                         .WithMany("PhoneNumbers")
@@ -248,13 +244,7 @@ namespace PersonDirectory.Data.Migrations
                     b.HasOne("PersonDirectory.Data.Models.Person", "Person")
                         .WithMany("RelatedPeople")
                         .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("PersonDirectory.Data.Models.Person", "RelativePerson")
-                        .WithMany("PeopleByRelated")
-                        .HasForeignKey("RelativePersonId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 #pragma warning restore 612, 618
