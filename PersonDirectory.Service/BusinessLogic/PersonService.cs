@@ -129,5 +129,38 @@ namespace PersonDirectory.Service.BusinessLogic
             var result = Mapper.Map(items, new List<Person>());
             return result;
         }
+
+        /// <summary>
+        /// რეპორტი თუ რამდენი დაკავშირებული პირი ჰყავს თითოეულ ფიზიკურ პირს, კავშირის ტიპის მიხედვით
+        /// </summary>
+        /// <param name="personId"></param>
+        /// <returns></returns>
+        public List<Service.Models.RelatedPersonsReportItem> GetRelatedPersonsReport(int personId)
+        {
+            return _repository.GetRelatedPersonsReport(personId);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="relatedPerson"></param>
+        public void AddRelatedPerson(RelatedPerson relatedPerson)
+        {
+            var itemToAdd = Mapper.Map(relatedPerson, new Data.Models.RelatedPerson());
+            _repository.AddRelatedPerson(itemToAdd);
+            Uow.SaveChanges();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="personId"></param>
+        /// <param name="relatedPersonId"></param>
+        public void RemoveRelatedPerson(RelationTypeEnum type, int personId, int relatedPersonId)
+        {
+            _repository.RemoveRelatedPerson(type, personId, relatedPersonId);
+            Uow.SaveChanges();
+        }
     }
 }

@@ -10,7 +10,10 @@ namespace PersonDirectory.Repository.Contracts.Base
         List<PhoneNumber> GetPersonPhoneNumber(int personId);
         void RemovePersonPhoneNumber(PhoneNumber number);
         void RemoveRelatedPerson(RelatedPerson relatedPerson);
+        void RemoveRelatedPerson(RelationTypeEnum type, int personId, int relatedPersonId);
         Person GetPersonById(int id);
         List<Person> GetPeople(string firstName, string lastName, string personalNumber, GenderEnum? gender = null, string phoneNumber = null, DateTime? birthDate = null, int? currentPage = null, int? itemsPerPage = null);
+        List<Service.Models.RelatedPersonsReportItem> GetRelatedPersonsReport(int personId);
+        void AddRelatedPerson(RelatedPerson relatedPerson);
     }
 }

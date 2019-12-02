@@ -71,5 +71,31 @@ namespace PersonDirectory.Repository.EF
         {
             Context.RelatedPeople.Remove(relatedPerson);
         }
+        public void RemoveRelatedPerson(RelationTypeEnum type, int personId, int relatedPersonId)
+        {
+            var itemToDelete = Context.RelatedPeople.FirstOrDefault(r => r.RelationType == type && r.PersonId == personId && r.RelativePersonId == relatedPersonId);
+            if (itemToDelete == null)
+                throw new Exception("მონაცემები არ მოიძებნა");
+
+            Context.RelatedPeople.Remove(itemToDelete);
+        }
+
+        public void AddRelatedPerson(RelatedPerson relatedPerson)
+        {
+            Context.RelatedPeople.Add(relatedPerson);
+        }
+
+        public List<Service.Models.RelatedPersonsReportItem> GetRelatedPersonsReport(int personId)
+        {
+            var report = Context.People.Where(p => p.Id == personId).SelectMany(p => p.RelatedPeople).GroupBy(p => p.RelationType)
+                .Select(p => new Service.Models.RelatedPersonsReportItem
+                {
+                    RelationType = p.Key,
+                    Count = p.Count(),
+                    PersonId = personId
+                }).ToList();
+
+            return report;
+        }
     }
 }
