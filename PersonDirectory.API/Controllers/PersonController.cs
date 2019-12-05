@@ -171,7 +171,7 @@ namespace PersonDirectory.API.Controllers
                 var fullPath = saveAttributes.Item3;
                 var pathForSave = saveAttributes.Item4;
 
-                _service.GetById(16);
+                _service.GetById(personId);
 
                 if (!Directory.Exists(directoryPath))
                     Directory.CreateDirectory(directoryPath);
@@ -200,7 +200,7 @@ namespace PersonDirectory.API.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <returns></returns
+        /// <returns></returns>
         [HttpGet]
         [Route("cities")]
         public ActionResult GetCities()
